@@ -18,7 +18,7 @@ h1{grid-column:1/-1;display:grid;grid-template-columns:subgrid;line-height:1}
 .occupy .word{display:block;aspect-ratio:1288/408;background:url(cover.webp) 50.5% 27.25% / 129.81% auto no-repeat;filter:grayscale(1) brightness(1.18) contrast(1.23);mix-blend-mode:screen}
 .blueprint{grid-column:1/-1;margin-top:clamp(8px,1.3vw,24px);color:#fff;font-size:clamp(36px,10vw,160px);font-weight:650;letter-spacing:-.065em}
 .credit{grid-column:1/-1;margin-top:clamp(15px,2.4vw,36px);font:400 clamp(11px,1.2vw,17px)/1.5 ui-monospace,monospace;letter-spacing:.085em;text-transform:uppercase;color:#d1d8e0}
-.night{position:absolute;inset:0;width:100%;height:100%;z-index:-2;pointer-events:none;opacity:.84;filter:blur(1.2px);mask-image:linear-gradient(#0000 2%,#000 47%)}
+.night{position:absolute;inset:0;width:100%;height:100%;z-index:-2;pointer-events:none;opacity:.84;filter:blur(1.2px);mask-image:linear-gradient(#0000 2%,#000 36%);transform-origin:0 50%;transform:translate3d(calc(8vw + var(--x)),calc(var(--y) + var(--scroll)),0) scale(1.75);will-change:transform}
 .street{position:absolute;z-index:-1;inset:8% 0 auto auto;width:32%;height:75%;overflow:hidden;opacity:.24;mask-image:linear-gradient(90deg,transparent,#000 72%)}
 .hero::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(ellipse 8% 17% at 86% 19%,#cbd7e016,transparent 85%),radial-gradient(ellipse 15% 21% at 96% 45%,#e0d1bc13,transparent 85%),radial-gradient(ellipse 11% 24% at 74% 60%,#abbccb0d,transparent 90%)}
 .street::after,.opening::after{content:"";position:absolute;inset:-12%;background:url(cover.webp) right center / auto 420% no-repeat;filter:grayscale(1) brightness(1.4) blur(1.2px);transform:translate3d(var(--x),calc(var(--y) + var(--scroll)),0)}
@@ -118,7 +118,7 @@ photograph.onload = () => {
   }
   const start = Math.max(performance.now(), rolloutStart + 15700);
   function animate(now) {
-    const progress = Math.min(1, Math.max(0, (now - start) / 20000));
+    const progress = Math.min(1, Math.max(0, (now - start) / 45000));
     draw(progress);
     if (progress < 1) requestAnimationFrame(animate);
   }
@@ -148,32 +148,60 @@ if (!preference.matches && 'IntersectionObserver' in window) {
     }));
   });
   document.documentElement.classList.add('js');
-  const hero = document.querySelector('.hero');
-  let x = 0;
-  let y = 0;
+  const scene = document.querySelector('main');
+  let targetX = 0;
+  let targetY = 0;
+  let currentX = 0;
+  let currentY = 0;
+  let currentScroll = 0;
   let frame = 0;
-  function draw() {
+  let lastTime = 0;
+  function draw(now) {
     frame = 0;
     if (preference.matches) return;
-    hero.style.setProperty('--x', x + 'px');
-    hero.style.setProperty('--y', y + 'px');
-    hero.style.setProperty('--scroll', Math.min(window.scrollY, window.innerHeight) * .12 + 'px');
+    const elapsed = lastTime ? Math.min(now - lastTime, 64) : 16;
+    lastTime = now;
+    const easing = 1 - Math.exp(-elapsed / 360);
+    const targetScroll = Math.min(window.scrollY, scene.offsetHeight) * .32;
+    currentX += (targetX - currentX) * easing;
+    currentY += (targetY - currentY) * easing;
+    currentScroll += (targetScroll - currentScroll) * easing;
+    scene.style.setProperty('--x', currentX + 'px');
+    scene.style.setProperty('--y', currentY + 'px');
+    scene.style.setProperty('--scroll', currentScroll + 'px');
+    const remaining = Math.abs(targetX - currentX) + Math.abs(targetY - currentY) + Math.abs(targetScroll - currentScroll);
+    if (remaining > .1) frame = requestAnimationFrame(draw);
   }
   function schedule() {
-    if (!frame) frame = requestAnimationFrame(draw);
+    if (!frame) {
+      lastTime = 0;
+      frame = requestAnimationFrame(draw);
+    }
   }
-  hero.addEventListener('pointermove', event => {
+  scene.addEventListener('pointermove', event => {
     if (event.pointerType !== 'mouse' && event.pointerType !== 'pen') return;
-    x = (event.clientX / window.innerWidth - .5) * 46;
-    y = (event.clientY / window.innerHeight - .5) * 28;
+    targetX = (.5 - event.clientX / innerWidth) * Math.min(innerWidth * .09, 130);
+    targetY = (.5 - event.clientY / innerHeight) * 80;
     schedule();
   });
-  hero.addEventListener('pointerleave', () => {
-    x = 0;
-    y = 0;
+  scene.addEventListener('pointerleave', () => {
+    targetX = 0;
+    targetY = 0;
     schedule();
   });
   window.addEventListener('scroll', schedule, { passive: true });
+  window.addEventListener('resize', schedule);
+  preference.addEventListener('change', () => {
+    if (preference.matches) {
+      cancelAnimationFrame(frame);
+      frame = 0;
+      scene.style.setProperty('--x', '0px');
+      scene.style.setProperty('--y', '0px');
+      scene.style.setProperty('--scroll', '0px');
+    } else {
+      schedule();
+    }
+  });
   schedule();
 }
 </script>
