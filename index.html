@@ -14,11 +14,12 @@ main{overflow:clip;min-height:125svh;display:grid;align-content:start;position:r
 h1,p,figure{margin:0}
 h1{grid-column:1/-1;display:grid;grid-template-columns:subgrid;line-height:1}
 .frame{display:block;overflow:hidden}
-.occupy{grid-column:1/11;width:min(100%,1100px)}
+.occupy{grid-column:1/11;width:min(100%,1100px);mix-blend-mode:screen}
+.the{grid-column:1/-1;margin-bottom:clamp(12px,1.6vw,24px);font-size:clamp(18px,2vw,32px);font-weight:500;letter-spacing:.24em;color:#fff}
 .occupy .word{display:block;aspect-ratio:1288/408;background:url(cover.webp) 50.5% 27.25% / 129.81% auto no-repeat;filter:grayscale(1) brightness(1.18) contrast(1.23);mix-blend-mode:screen}
 .blueprint{grid-column:1/-1;margin-top:clamp(8px,1.3vw,24px);color:#fff;font-size:clamp(36px,10vw,160px);font-weight:650;letter-spacing:-.065em}
 .credit{grid-column:1/-1;margin-top:clamp(15px,2.4vw,36px);font:400 clamp(11px,1.2vw,17px)/1.5 ui-monospace,monospace;letter-spacing:.085em;text-transform:uppercase;color:#d1d8e0}
-.night{position:absolute;inset:0;width:100%;height:100%;z-index:-2;pointer-events:none;opacity:.84;filter:blur(1.2px);mask-image:linear-gradient(#0000 2%,#000 36%);transform-origin:0 50%;transform:translate3d(calc(8vw + var(--x)),calc(var(--y) + var(--scroll)),0) scale(1.75);will-change:transform}
+.night{position:absolute;inset:0;width:100%;height:100%;z-index:-2;pointer-events:none;opacity:.84;filter:blur(1.2px);mask-image:linear-gradient(#0000 2%,#000 36%);transform-origin:0 50%;transform:translate3d(calc(8vw + var(--x)),calc(var(--y) + var(--scroll)),0) scale(1.375);will-change:transform}
 .street{position:absolute;z-index:-1;inset:8% 0 auto auto;width:32%;height:75%;overflow:hidden;opacity:.24;mask-image:linear-gradient(90deg,transparent,#000 72%)}
 .hero::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(ellipse 8% 17% at 86% 19%,#cbd7e016,transparent 85%),radial-gradient(ellipse 15% 21% at 96% 45%,#e0d1bc13,transparent 85%),radial-gradient(ellipse 11% 24% at 74% 60%,#abbccb0d,transparent 90%)}
 .street::after,.opening::after{content:"";position:absolute;inset:-12%;background:url(cover.webp) right center / auto 420% no-repeat;filter:grayscale(1) brightness(1.4) blur(1.2px);transform:translate3d(var(--x),calc(var(--y) + var(--scroll)),0)}
@@ -51,7 +52,7 @@ a:focus-visible{outline:1px solid currentColor;outline-offset:.55em}
 <section class="hero run" aria-label="The Occupy Blueprint">
 <div class="opening" aria-hidden="true"></div>
 <figure class="street" aria-hidden="true"></figure>
-<h1 aria-label="The Occupy Blueprint"><span class="frame occupy" aria-hidden="true"><span class="word" style="--at:3.6s"></span></span><span class="frame blueprint"><span class="word" style="--at:5.1s">BLUEPRINT</span></span></h1>
+<h1 aria-label="The Occupy Blueprint"><span class="frame the"><span class="word" style="--at:3s">THE</span></span><span class="frame occupy" aria-hidden="true"><span class="word" style="--at:3.6s"></span></span><span class="frame blueprint"><span class="word" style="--at:5.1s">BLUEPRINT</span></span></h1>
 <p class="credit" data-delay="6.25">By Tali Gillette</p>
 </section>
 <section class="statement run" aria-label="Tagline"><div class="statement-inner">
