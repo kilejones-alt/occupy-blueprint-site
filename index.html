@@ -415,7 +415,8 @@ if (!preference.matches && 'IntersectionObserver' in window) {
   function revealNext() {
     if (waiting || nextReveal >= revealItems.length) return;
     const element = revealItems[nextReveal];
-    if (element.getBoundingClientRect().top >= innerHeight * .94) return;
+    const bounds = element.getBoundingClientRect();
+    if (bounds.top + Math.min(bounds.height * .45, innerHeight * .25) >= innerHeight * .94) return;
     element.classList.add('revealed');
     const pause = pauses[nextReveal++];
     if (nextReveal === revealItems.length) {
