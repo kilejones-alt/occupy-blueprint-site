@@ -96,6 +96,14 @@ h1 { font-weight: 400; line-height: 1; }
   text-transform: uppercase;
   color: #d1d8e0;
 }
+.night-field {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  overflow: hidden;
+  mask-image: linear-gradient(transparent 2%, #000 24%, #000 62%, transparent 100%);
+}
 .night {
   position: absolute;
   inset: 0;
@@ -105,7 +113,6 @@ h1 { font-weight: 400; line-height: 1; }
   pointer-events: none;
   opacity: .84;
   filter: blur(1.2px);
-  mask-image: linear-gradient(transparent 2%, #000 36%, #000 72%, transparent);
   transform-origin: 0 50%;
   transform: translate3d(calc(8vw + var(--x)), calc(var(--y) + var(--scroll)), 0) scale(1.375);
   will-change: transform;
@@ -275,7 +282,7 @@ a:focus-visible { outline: 1px solid currentColor; outline-offset: .55em; }
 </head>
 <body>
 <main>
-<canvas class="night" aria-hidden="true"></canvas>
+<div class="night-field" aria-hidden="true"><canvas class="night"></canvas></div>
 <section class="hero run" aria-label="The Occupy Blueprint">
 <div class="opening" aria-hidden="true"></div>
 <figure class="street" aria-hidden="true"></figure>
