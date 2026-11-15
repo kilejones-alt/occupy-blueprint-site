@@ -409,7 +409,7 @@ photograph.onload = () => {
     const start = performance.now();
     let lastPaint = 0;
     function animate(now) {
-      const progress = Math.min(1, (now - start) / 40000);
+      const progress = Math.min(1, (now - start) / 30000);
       if (now - lastPaint >= 32 || progress === 1) {
         draw(progress);
         lastPaint = now;
