@@ -1,39 +1,109 @@
 <!doctype html>
 <html lang="en">
+<head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>The Occupy Blueprint — Tali Gillette</title>
 <style>
+:root{color-scheme:dark;--ink:#040405;--paper:#e8edf2;--oxblood:#b75c70;--gutter:clamp(20px,5vw,90px);--x:0px;--y:0px;--scroll:0px}
 *{box-sizing:border-box}
-body{margin:0;background:#09090b;color:#e1e8f0;font-family:Georgia,serif}
-main{min-height:100svh;display:grid;place-items:center;padding:clamp(18px,5vw,72px);position:relative;isolation:isolate;overflow:hidden}
-.street,.opening{position:absolute;inset:0;z-index:-1;pointer-events:none}
-.street{background:radial-gradient(ellipse at 14% 29%,#bac3ca40,transparent 26%),radial-gradient(ellipse at 89% 18%,#bfc9d23b,transparent 30%),radial-gradient(ellipse at 84% 83%,#6b162f45,transparent 38%),#09090b}
-.opening{z-index:2;background:#101013 url(cover.webp) right 38% center / auto 440% no-repeat;background-position:right center;filter:grayscale(1) brightness(1.5);animation:fade 5.6s 250ms both}
-.cover{width:min(100%,1060px);text-align:center}
-h1,p{margin:0}
-h1{line-height:1}
-.occupy{display:block;width:100%;aspect-ratio:1288/408;background:url(cover.webp) 50.5% 27.25% / 129.81% auto no-repeat;filter:grayscale(1) brightness(.95) contrast(1.08) sepia(.12) hue-rotate(175deg);mix-blend-mode:screen}
-.visually-hidden{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
-.blueprint{display:block;margin-top:clamp(5px,1.25vw,16px);font-size:clamp(19px,5.85vw,77px);letter-spacing:.24em;text-indent:.24em;text-transform:uppercase}
-.credit{display:flex;justify-content:center;gap:.65em;margin-top:clamp(12px,2.2vw,28px);text-transform:uppercase;letter-spacing:.19em;font-size:clamp(10px,1.65vw,19px)}
-.tagline{margin-top:clamp(27px,5vw,55px);font-size:clamp(19px,3.3vw,45px);line-height:1.22;text-wrap:balance}
-.tagline strong{display:block;color:#bd6579;font-weight:400}
-.reveal,.tagline span,.credit span{display:inline-block;animation:roll 1050ms cubic-bezier(.2,.65,.25,1) both;animation-delay:var(--at)}
-.occupy,.blueprint{display:block}
-a{display:inline-block;margin-top:clamp(23px,4vw,42px);color:inherit;text-decoration:underline;text-underline-offset:.25em;font:400 14px system-ui;animation:roll 1050ms 14.1s both}
-a:hover,a:focus-visible{color:#fff}
-@keyframes fade{0%,12%{opacity:1}100%{opacity:0}}
-@keyframes roll{from{clip-path:inset(0 0 100%);opacity:0;transform:translateY(-.14em)}to{clip-path:inset(0);opacity:1;transform:none}}
-@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important}.opening{display:none}}
+body{margin:0;background:var(--ink);color:var(--paper);font-family:system-ui,sans-serif}
+main{overflow:hidden}
+.hero,.statement{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));padding-inline:var(--gutter);position:relative;isolation:isolate}
+.hero{min-height:100svh;align-content:center;padding-block:12vh 22vh}
+h1,p,figure{margin:0}
+h1{grid-column:1/-1;display:grid;grid-template-columns:subgrid;line-height:1}
+.frame{display:block;overflow:hidden}
+.occupy{grid-column:1/11}
+.occupy .word{display:block;aspect-ratio:1288/408;background:url(cover.webp) 50.5% 27.25% / 129.81% auto no-repeat;filter:grayscale(1) brightness(.92) contrast(1.25);mix-blend-mode:screen}
+.blueprint{grid-column:4/-1;margin-top:clamp(8px,1.3vw,24px);font-size:clamp(27px,9.2vw,174px);font-weight:650;letter-spacing:-.085em}
+.credit{grid-column:4/-1;margin-top:clamp(15px,2.4vw,36px);font:400 clamp(11px,1.2vw,17px)/1.5 ui-monospace,monospace;letter-spacing:.085em;text-transform:uppercase;color:#b7bfca}
+.street{position:absolute;z-index:-1;inset:8% 0 auto auto;width:32%;height:75%;overflow:hidden;opacity:.33;mask-image:linear-gradient(90deg,transparent,#000 72%)}
+.street::after,.opening::after{content:"";position:absolute;inset:-12%;background:url(cover.webp) right center / auto 420% no-repeat;filter:grayscale(1) brightness(1.58);transform:translate3d(var(--x),calc(var(--y) + var(--scroll)),0)}
+.opening{position:absolute;inset:0 0 auto;height:100svh;overflow:hidden;pointer-events:none;background:var(--ink);z-index:2;animation:fade 5.4s .15s both;mask-image:linear-gradient(90deg,#000 77%,transparent)}
+.opening::after{background-size:auto 360%;background-position:100% 55%;opacity:.8}
+.statement{min-height:64svh;align-content:center;padding-block:10vh 15vh}
+.tagline{grid-column:4/-1;font-size:clamp(30px,5.6vw,106px);font-weight:480;letter-spacing:-.065em;line-height:1.08}
+.tagline strong{display:block;color:var(--oxblood);font-weight:inherit}
+.token{display:inline-block;overflow:hidden;vertical-align:bottom;padding-bottom:.09em}
+.word{display:inline-block}
+.run .word{animation:roll 1.22s cubic-bezier(.22,.71,.18,1) var(--at,0s) both}
+.js .statement:not(.run) .word{visibility:hidden}
+a{grid-column:4/-1;justify-self:start;margin-top:clamp(25px,5vw,75px);color:inherit;text-underline-offset:.3em;font:400 14px ui-monospace,monospace}
+a:hover,a:focus-visible{color:var(--oxblood)}
+@keyframes roll{from{transform:translate3d(0,-105%,0);opacity:.1}to{transform:translate3d(0,0,0);opacity:1}}
+@keyframes fade{0%,11%{opacity:1}100%{opacity:0;visibility:hidden}}
+@media(max-width:650px){.hero{padding-bottom:14vh;min-height:93svh}.occupy{grid-column:1/-1}.blueprint,.credit,.tagline,a{grid-column:2/-1}.blueprint{font-size:11.4vw}.street{width:46%}.statement{min-height:55svh}}
+@media(prefers-reduced-motion:reduce){.opening{display:none}.run .word{animation:none}.street::after{transform:none}.js .statement:not(.run) .word{visibility:visible}}
 </style>
+</head>
+<body>
 <main>
-<div class="street" aria-hidden="true"></div><div class="opening" aria-hidden="true"></div>
-<section class="cover" aria-label="The Occupy Blueprint">
-<h1><span class="occupy reveal" style="--at:3.65s"><span class="visually-hidden">The Occupy</span></span><span class="blueprint reveal" style="--at:5.05s">Blueprint</span></h1>
-<p class="credit"><span style="--at:6.05s">By</span> <span style="--at:6.7s">Tali</span> <span style="--at:7.35s">Gillette</span></p>
-<p class="tagline"><span style="--at:8.4s">They</span> <span style="--at:8.95s">didn’t</span> <span style="--at:9.5s">just</span> <span style="--at:10.05s">occupy</span> <span style="--at:10.6s">Wall</span> <span style="--at:11.15s">Street.</span> <strong><span style="--at:12.1s">They</span> <span style="--at:12.65s">occupied</span> <span style="--at:13.2s">US.</span></strong></p>
+<section class="hero run" aria-label="The Occupy Blueprint">
+<div class="opening" aria-hidden="true"></div>
+<figure class="street" aria-hidden="true"></figure>
+<h1 aria-label="The Occupy Blueprint"><span class="frame occupy" aria-hidden="true"><span class="word" style="--at:3.6s"></span></span><span class="frame blueprint"><span class="word" style="--at:5.1s">BLUEPRINT</span></span></h1>
+<p class="credit" data-delay="6.25">By Tali Gillette</p>
+</section>
+<section class="statement" aria-label="Tagline">
+<p class="tagline"><span data-delay=".15">They didn’t just occupy Wall Street.</span><strong data-delay="4.1">They occupied US.</strong></p>
 <a href="https://taligillette.substack.com/">Substack</a>
 </section>
 </main>
+<script>
+const preference = matchMedia('(prefers-reduced-motion: reduce)');
+if (!preference.matches && 'IntersectionObserver' in window) {
+  document.querySelectorAll('[data-delay]').forEach(line => {
+    const start = Number(line.dataset.delay);
+    const words = line.textContent.trim().split(/\s+/);
+    line.replaceChildren(...words.flatMap((word, index) => {
+      const mask = document.createElement('span');
+      const text = document.createElement('span');
+      mask.className = 'token';
+      text.className = 'word';
+      text.style.setProperty('--at', (start + index * .64) + 's');
+      text.textContent = word;
+      mask.append(text);
+      return index ? [' ', mask] : [mask];
+    }));
+  });
+  document.documentElement.classList.add('js');
+  const statement = document.querySelector('.statement');
+  const observer = new IntersectionObserver(entries => {
+    if (!entries[0].isIntersecting) return;
+    statement.classList.add('run');
+    observer.disconnect();
+  }, { threshold: .2 });
+  observer.observe(statement);
+
+  const hero = document.querySelector('.hero');
+  let x = 0;
+  let y = 0;
+  let frame = 0;
+  function draw() {
+    frame = 0;
+    if (preference.matches) return;
+    hero.style.setProperty('--x', x + 'px');
+    hero.style.setProperty('--y', y + 'px');
+    hero.style.setProperty('--scroll', Math.min(window.scrollY, window.innerHeight) * .12 + 'px');
+  }
+  function schedule() {
+    if (!frame) frame = requestAnimationFrame(draw);
+  }
+  hero.addEventListener('pointermove', event => {
+    if (event.pointerType !== 'mouse' && event.pointerType !== 'pen') return;
+    x = (event.clientX / window.innerWidth - .5) * 46;
+    y = (event.clientY / window.innerHeight - .5) * 28;
+    schedule();
+  });
+  hero.addEventListener('pointerleave', () => {
+    x = 0;
+    y = 0;
+    schedule();
+  });
+  window.addEventListener('scroll', schedule, { passive: true });
+  schedule();
+}
+</script>
+</body>
 </html>
