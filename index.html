@@ -113,8 +113,8 @@ h1 { font-weight: 400; line-height: 1; }
   pointer-events: none;
   opacity: .84;
   filter: blur(1.2px);
-  transform-origin: 0 50%;
-  transform: translate3d(calc(8vw + var(--x)), calc(var(--y) + var(--scroll)), 0) scale(1.375);
+  transform-origin: 50% 50%;
+  transform: translate3d(var(--x), calc(var(--y) + var(--scroll)), 0) scale(1.375);
   will-change: transform;
 }
 .street {
@@ -143,7 +143,7 @@ h1 { font-weight: 400; line-height: 1; }
   pointer-events: none;
   background: var(--ink);
   z-index: 2;
-  animation: fade 3.8s .15s both;
+  animation: fade 3.4s .15s both;
   mask-image: linear-gradient(90deg, #000 77%, transparent);
 }
 .opening::after {
@@ -198,8 +198,8 @@ h1 { font-weight: 400; line-height: 1; }
 }
 .word { display: inline-block; }
 .js [data-reveal]:not(.revealed) .word { opacity: 0; }
-.revealed .word { animation: roll 1.15s cubic-bezier(.18,.7,.24,1) var(--at, 0s) backwards; }
-.tagline .revealed .word { animation: wave 1.05s cubic-bezier(.18,.7,.24,1) var(--at, 0s) backwards; }
+.revealed .word { animation: roll 1s cubic-bezier(.18,.7,.24,1) var(--at, 0s) backwards; }
+.tagline .revealed .word { animation: wave .9s cubic-bezier(.18,.7,.24,1) var(--at, 0s) backwards; }
 .tagline strong.revealed .word { animation: roll 2.6s cubic-bezier(.2,.65,.25,1) var(--at, 0s) backwards; }
 a {
   display: inline-block;
@@ -352,6 +352,22 @@ photograph.onload = () => {
       lights.push({x, y, r, g, b, intensity, order: distance + offset});
     }
   }
+  // Frame the illuminated land, excluding the empty black image margins.
+  if (lights.length) {
+    const xs = lights.map(light => light.x).sort((a, b) => a - b);
+    const ys = lights.map(light => light.y).sort((a, b) => a - b);
+    const low = Math.floor(lights.length * .02);
+    const high = Math.floor(lights.length * .98);
+    const centerX = (xs[low] + xs[high]) / 2;
+    const centerY = (ys[low] + ys[high]) / 2;
+    const framing = Math.min(w * .78 / (xs[high] - xs[low]), h * .78 / (ys[high] - ys[low]));
+    for (const light of lights) {
+      light.x = (light.x - centerX) * framing + w / 2;
+      light.y = (light.y - centerY) * framing + h / 2;
+      const offset = ((light.x * 47 + light.y * 31) % 37) - 18;
+      light.order = Math.hypot((light.x - w / 2) * .85, light.y - h / 2) + offset;
+    }
+  }
   lights.sort((a, b) => a.order - b.order);
   function draw(progress) {
     context.clearRect(0, 0, w, h);
@@ -380,7 +396,7 @@ photograph.onload = () => {
     const start = performance.now();
     let lastPaint = 0;
     function animate(now) {
-      const progress = Math.min(1, (now - start) / 20000);
+      const progress = Math.min(1, (now - start) / 12000);
       if (now - lastPaint >= 32 || progress === 1) {
         draw(progress);
         lastPaint = now;
@@ -423,7 +439,7 @@ if (!preference.matches && 'IntersectionObserver' in window) {
   });
   document.documentElement.classList.add('js');
   const revealItems = [...document.querySelectorAll('[data-reveal]')];
-  const pauses = [400, 650, 650, 400, 650, 550, 4500, 0];
+  const pauses = [350, 600, 600, 350, 550, 500, 4500, 0];
   let nextReveal = 0;
   let waiting = true;
   function revealNext() {
@@ -432,9 +448,9 @@ if (!preference.matches && 'IntersectionObserver' in window) {
     const bounds = element.getBoundingClientRect();
     if (bounds.top + Math.min(bounds.height * .45, innerHeight * .25) >= innerHeight * .94) return;
     element.classList.add('revealed');
+    if (element.classList.contains('occupy')) requestLights();
     const pause = pauses[nextReveal++];
     if (nextReveal === revealItems.length) {
-      setTimeout(requestLights, 1800);
       revealObserver.disconnect();
       window.removeEventListener('scroll', revealNext);
       window.removeEventListener('resize', revealNext);
@@ -453,7 +469,7 @@ if (!preference.matches && 'IntersectionObserver' in window) {
   setTimeout(() => {
     waiting = false;
     revealNext();
-  }, 1800);
+  }, 1600);
 
   const scene = document.querySelector('main');
   let targetX = 0;
