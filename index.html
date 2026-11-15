@@ -13,7 +13,7 @@ main{overflow:clip;min-height:125svh;display:grid;align-content:start;position:r
 .hero{position:static;align-content:center}
 h1,p,figure{margin:0}
 h1{grid-column:1/-1;display:grid;grid-template-columns:subgrid;line-height:1}
-.frame{display:block;overflow:hidden}
+.frame{display:block;overflow:hidden;transition:transform .85s cubic-bezier(.2,.7,.2,1),filter 1.2s ease}
 .occupy{grid-column:1/11;width:min(100%,1100px);mix-blend-mode:screen}
 .the{grid-column:1/-1;margin-bottom:clamp(12px,1.6vw,24px);font-size:clamp(18px,2vw,32px);font-weight:500;letter-spacing:.24em;color:#fff}
 .occupy .word{display:block;aspect-ratio:1288/408;background:url(cover.webp) 50.5% 27.25% / 129.81% auto no-repeat;filter:grayscale(1) brightness(1.18) contrast(1.23);mix-blend-mode:screen}
@@ -28,22 +28,23 @@ h1{grid-column:1/-1;display:grid;grid-template-columns:subgrid;line-height:1}
 .statement{align-content:center;margin-top:clamp(24px,5.2svh,58px)}
 .tagline{grid-column:1/-1;font-size:clamp(26px,4.5vw,72px);font-weight:480;letter-spacing:-.045em;word-spacing:.09em;line-height:1.16}
 .second-line{display:flex;align-items:baseline;flex-wrap:wrap;gap:0 .24em;margin-top:.12em}.tagline .token{vertical-align:baseline}.tagline strong{color:var(--oxblood);font-weight:inherit;white-space:nowrap;display:inline-block}.tagline strong .token{vertical-align:baseline}
-.token{display:inline-block;overflow:hidden;vertical-align:bottom;padding-bottom:.09em}
+.token{display:inline-block;overflow:hidden;vertical-align:bottom;padding-bottom:.09em;transition:transform .85s cubic-bezier(.2,.7,.2,1),filter 1.2s ease}
+.hover-word{display:inline-block;transition:transform .85s cubic-bezier(.2,.7,.2,1),filter 1.2s ease,color 1.2s ease}
 .word{display:inline-block;transition:filter 1.45s ease,color 1.45s ease,text-shadow 1.45s ease}
-@media(hover:hover){.word:hover{color:#fff;filter:brightness(1.16);text-shadow:0 0 .5em #e1edff45}.tagline strong .word:hover{color:#cf3852;text-shadow:0 0 .45em #d36b8045}.occupy .word:hover{filter:grayscale(1) brightness(1.24) contrast(1.15)}}
+@media(hover:hover){.frame:hover{transform:translateY(-3px);filter:brightness(1.12)}.token:not(:has(.hover-word)):hover,.hover-word:hover{transform:translateY(-2px);filter:brightness(1.16);color:#fff}.word:hover{color:#fff;filter:brightness(1.16);text-shadow:0 0 .5em #e1edff45}.tagline strong .word:hover{color:#cf3852;text-shadow:0 0 .45em #d36b8045}.occupy .word:hover{filter:grayscale(1) brightness(1.24) contrast(1.15)}}
 .run .word{animation:roll 1.22s cubic-bezier(.22,.71,.18,1) var(--at,0s) both}
 .statement-inner{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));grid-column:1/-1}
 .run .tagline .word{animation:wave 1.9s cubic-bezier(.16,.75,.22,1) var(--at) both}
-@keyframes wave{0%{transform:translate3d(0,-105%,0) rotateX(18deg);filter:blur(7px);opacity:.15}55%{filter:blur(1.5px);opacity:1}100%{transform:translate3d(0,0,0) rotateX(0);filter:blur(0);opacity:1}}
+@keyframes wave{0%{transform:translate3d(0,-.65em,0) rotateX(7deg);clip-path:inset(0 0 100%);filter:blur(3px);opacity:0}55%{filter:blur(.6px);opacity:.9}100%{transform:translate3d(0,0,0) rotateX(0);clip-path:inset(-5px);filter:blur(0);opacity:1}}
 .run .tagline strong .word{animation-duration:1.8s}
 a{grid-column:1/-1;justify-self:start;margin-top:clamp(13px,2.7svh,32px);color:inherit;position:relative;text-decoration:none;font:400 14px ui-monospace,monospace}
 a::after{content:"";position:absolute;inset:auto 0 -.35em;height:1px;background:currentColor;transform-origin:left}
 .js a{animation:roll .8s 13.3s both}.js a::after{animation:underline 2.1s 13.6s cubic-bezier(.2,.65,.3,1) both}@keyframes underline{from{transform:scaleX(0)}to{transform:scaleX(1)}}
 a:focus-visible{outline:1px solid currentColor;outline-offset:.55em}
-@keyframes roll{from{transform:translate3d(0,-105%,0);opacity:.1}to{transform:translate3d(0,0,0);opacity:1}}
+@keyframes roll{from{transform:translate3d(0,-.6em,0);clip-path:inset(0 0 100%);opacity:0}to{transform:translate3d(0,0,0);clip-path:inset(0);opacity:1}}
 @keyframes fade{0%,11%{opacity:1}100%{opacity:0;visibility:hidden}}
 @media(max-width:650px){.occupy{grid-column:1/-1}.blueprint{font-size:11.4vw}.street{width:46%}}
-@media(prefers-reduced-motion:reduce){.opening{display:none}.run .word{animation:none}.street::after{transform:none}.js a,.js a::after{animation:none}}
+@media(prefers-reduced-motion:reduce){.frame,.token,.hover-word{transition:none}.frame:hover,.token:not(:has(.hover-word)):hover,.hover-word:hover{transform:none}.opening{display:none}.run .word{animation:none}.street::after{transform:none}.js a,.js a::after{animation:none}}
 </style>
 </head>
 <body>
@@ -142,7 +143,16 @@ if (!preference.matches && 'IntersectionObserver' in window) {
       mask.className = 'token';
       text.className = 'word';
       text.style.setProperty('--at', (start + index * step) + 's');
-      text.textContent = word;
+      if (letters) {
+        text.textContent = word;
+      } else {
+        text.replaceChildren(...word.split(/\s+/).flatMap((part, partIndex) => {
+          const hoverWord = document.createElement('span');
+          hoverWord.className = 'hover-word';
+          hoverWord.textContent = part;
+          return partIndex ? [' ', hoverWord] : [hoverWord];
+        }));
+      }
       mask.append(text);
       if (letters) mask.setAttribute('aria-hidden', 'true');
       return index && !letters ? [' ', mask] : [mask];
