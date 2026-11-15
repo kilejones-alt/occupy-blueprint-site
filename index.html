@@ -275,7 +275,17 @@ h1 { font-weight: 400; line-height: 1; }
 .js .statement [data-reveal]:not(.revealed) { opacity: 0; }
 .revealed .word { animation: roll 1s cubic-bezier(.18,.7,.24,1) var(--at, 0s) backwards; }
 .tagline .revealed .word { animation: wave 1.05s cubic-bezier(.18,.7,.24,1) var(--at, 0s) backwards; }
-.tagline strong.revealed .word { animation: roll 2.6s cubic-bezier(.2,.65,.25,1) var(--at, 0s) backwards; }
+[data-letters] { --letter-roll-duration: 2.6s; }
+.tagline strong.revealed .word {
+  animation: roll var(--letter-roll-duration) cubic-bezier(.2,.65,.25,1) var(--at, 0s) backwards;
+}
+.tagline strong.revealed .word.period {
+  animation: period-appear .7s ease-in-out calc(var(--letter-roll-duration) + var(--at)) backwards;
+}
+@keyframes period-appear {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
 a {
   display: inline-block;
   margin-top: clamp(22px, 3svh, 36px);
@@ -363,6 +373,7 @@ a:focus-visible { outline: 1px solid currentColor; outline-offset: .55em; }
   .reveal-pending .statement [data-reveal]:not(.revealed),
   .js .statement [data-reveal]:not(.revealed) { opacity: 1; }
   .revealed .word, .tagline .revealed .word, .js .statement a, .js .statement a::after, .js .reading.entered a::after { animation: none; }
+  .tagline strong.revealed .word.period { animation: none; }
   .street::after { transform: none; }
   .js .reading { opacity: 1; transform: none; transition: none; }
   .js .reading a::after { transform: none; }
@@ -500,7 +511,16 @@ if (!preference.matches && 'IntersectionObserver' in window) {
       const text = document.createElement('span');
       mask.className = 'token';
       text.className = 'word';
-      text.style.setProperty('--at', (start + index * step) + 's');
+      if (letters) {
+        const isPeriod = word === '.';
+        const letterIndex = Math.floor(index / 2);
+        const lastLetterDelay = (words.filter(character => character !== '.').length - 1) * step;
+        const delay = isPeriod ? lastLetterDelay + letterIndex + 1 : letterIndex * step;
+        if (isPeriod) text.classList.add('period');
+        text.style.setProperty('--at', (start + delay) + 's');
+      } else {
+        text.style.setProperty('--at', start + 's');
+      }
       if (letters) {
         text.textContent = word;
       } else {
