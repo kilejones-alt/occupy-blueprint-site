@@ -5,7 +5,7 @@
 <title>The Occupy Blueprint — Tali Gillette</title>
 <style>
 *{box-sizing:border-box}
-body{margin:0;background:#09090b;color:#f4f4f5;font-family:Georgia,serif}
+body{margin:0;background:#09090b;color:#e1e8f0;font-family:Georgia,serif}
 main{min-height:100svh;display:grid;place-items:center;padding:clamp(18px,5vw,72px);position:relative;isolation:isolate;overflow:hidden}
 .street,.opening{position:absolute;inset:0;z-index:-1;pointer-events:none}
 .street{background:radial-gradient(ellipse at 14% 29%,#bac3ca40,transparent 26%),radial-gradient(ellipse at 89% 18%,#bfc9d23b,transparent 30%),radial-gradient(ellipse at 84% 83%,#6b162f45,transparent 38%),#09090b}
@@ -13,16 +13,16 @@ main{min-height:100svh;display:grid;place-items:center;padding:clamp(18px,5vw,72
 .cover{width:min(100%,1060px);text-align:center}
 h1,p{margin:0}
 h1{line-height:1}
-.occupy{display:block;width:100%;aspect-ratio:1288/408;background:url(cover.webp) 50.5% 27.25% / 129.81% auto no-repeat;filter:grayscale(1) brightness(1.18) contrast(1.13);mix-blend-mode:screen}
+.occupy{display:block;width:100%;aspect-ratio:1288/408;background:url(cover.webp) 50.5% 27.25% / 129.81% auto no-repeat;filter:grayscale(1) brightness(.95) contrast(1.08) sepia(.12) hue-rotate(175deg);mix-blend-mode:screen}
 .visually-hidden{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
 .blueprint{display:block;margin-top:clamp(5px,1.25vw,16px);font-size:clamp(19px,5.85vw,77px);letter-spacing:.24em;text-indent:.24em;text-transform:uppercase}
 .credit{display:flex;justify-content:center;gap:.65em;margin-top:clamp(12px,2.2vw,28px);text-transform:uppercase;letter-spacing:.19em;font-size:clamp(10px,1.65vw,19px)}
 .tagline{margin-top:clamp(27px,5vw,55px);font-size:clamp(19px,3.3vw,45px);line-height:1.22;text-wrap:balance}
 .tagline strong{display:block;color:#bd6579;font-weight:400}
-.reveal,.tagline span,.credit span{display:inline-block;animation:roll 720ms cubic-bezier(.2,.65,.25,1) both;animation-delay:var(--at)}
+.reveal,.tagline span,.credit span{display:inline-block;animation:roll 1050ms cubic-bezier(.2,.65,.25,1) both;animation-delay:var(--at)}
 .occupy,.blueprint{display:block}
-a{display:inline-block;margin-top:clamp(23px,4vw,42px);padding:.75em 1em;background:#501321;color:#fff;text-decoration:none;font:600 14px system-ui;animation:roll 750ms 9.25s both}
-a:hover,a:focus-visible{background:#732338}
+a{display:inline-block;margin-top:clamp(23px,4vw,42px);color:inherit;text-decoration:underline;text-underline-offset:.25em;font:400 14px system-ui;animation:roll 1050ms 14.1s both}
+a:hover,a:focus-visible{color:#fff}
 @keyframes fade{0%,12%{opacity:1}100%{opacity:0}}
 @keyframes roll{from{clip-path:inset(0 0 100%);opacity:0;transform:translateY(-.14em)}to{clip-path:inset(0);opacity:1;transform:none}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important}.opening{display:none}}
@@ -31,9 +31,9 @@ a:hover,a:focus-visible{background:#732338}
 <div class="street" aria-hidden="true"></div><div class="opening" aria-hidden="true"></div>
 <section class="cover" aria-label="The Occupy Blueprint">
 <h1><span class="occupy reveal" style="--at:3.65s"><span class="visually-hidden">The Occupy</span></span><span class="blueprint reveal" style="--at:5.05s">Blueprint</span></h1>
-<p class="credit"><span style="--at:5.8s">By</span> <span style="--at:6.07s">Tali</span> <span style="--at:6.34s">Gillette</span></p>
-<p class="tagline"><span style="--at:7s">They</span> <span style="--at:7.18s">didn’t</span> <span style="--at:7.36s">just</span> <span style="--at:7.54s">occupy</span> <span style="--at:7.72s">Wall</span> <span style="--at:7.9s">Street.</span> <strong><span style="--at:8.31s">They</span> <span style="--at:8.56s">occupied</span> <span style="--at:8.87s">US.</span></strong></p>
-<a href="https://taligillette.substack.com/">Read on Substack</a>
+<p class="credit"><span style="--at:6.05s">By</span> <span style="--at:6.7s">Tali</span> <span style="--at:7.35s">Gillette</span></p>
+<p class="tagline"><span style="--at:8.4s">They</span> <span style="--at:8.95s">didn’t</span> <span style="--at:9.5s">just</span> <span style="--at:10.05s">occupy</span> <span style="--at:10.6s">Wall</span> <span style="--at:11.15s">Street.</span> <strong><span style="--at:12.1s">They</span> <span style="--at:12.65s">occupied</span> <span style="--at:13.2s">US.</span></strong></p>
+<a href="https://taligillette.substack.com/">Substack</a>
 </section>
 </main>
 </html>
