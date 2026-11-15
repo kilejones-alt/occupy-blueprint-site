@@ -8,43 +8,39 @@
 :root{color-scheme:dark;--ink:#040405;--paper:#f3f5f8;--oxblood:#a51d33;--gutter:clamp(20px,5vw,90px);--x:0px;--y:0px;--scroll:0px}
 *{box-sizing:border-box}
 body{margin:0;background:var(--ink);color:var(--paper);font-family:system-ui,sans-serif}
-main{overflow:hidden}
+main{overflow:clip;min-height:100svh;display:grid;align-content:center;position:relative;isolation:isolate;padding-block:clamp(26px,5vh,60px)}
 .hero,.statement{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));padding-inline:var(--gutter);position:relative;isolation:isolate}
-.hero{min-height:100svh;align-content:center;padding-block:12vh 22vh}
+.hero{position:static;align-content:center}
 h1,p,figure{margin:0}
 h1{grid-column:1/-1;display:grid;grid-template-columns:subgrid;line-height:1}
 .frame{display:block;overflow:hidden}
-.occupy{grid-column:1/11}
-.occupy .word{display:block;aspect-ratio:1288/408;background:url(cover.webp) 50.5% 27.25% / 129.81% auto no-repeat;filter:grayscale(1) brightness(1.08) contrast(1.19);mix-blend-mode:screen}
-.blueprint{grid-column:4/-1;margin-top:clamp(8px,1.3vw,24px);font-size:clamp(27px,9.2vw,174px);font-weight:650;letter-spacing:-.085em}
+.occupy{grid-column:1/11;width:min(100%,69svh)}
+.occupy .word{display:block;aspect-ratio:1288/408;background:url(cover.webp) 50.5% 27.25% / 129.81% auto no-repeat;filter:grayscale(1) brightness(1.18) contrast(1.23);mix-blend-mode:screen}
+.blueprint{grid-column:4/-1;margin-top:clamp(8px,1.3vw,24px);color:#fff;font-size:clamp(27px,min(8vw,11svh),145px);font-weight:650;letter-spacing:-.085em}
 .credit{grid-column:4/-1;margin-top:clamp(15px,2.4vw,36px);font:400 clamp(11px,1.2vw,17px)/1.5 ui-monospace,monospace;letter-spacing:.085em;text-transform:uppercase;color:#d1d8e0}
 .street{position:absolute;z-index:-1;inset:8% 0 auto auto;width:32%;height:75%;overflow:hidden;opacity:.24;mask-image:linear-gradient(90deg,transparent,#000 72%)}
 .hero::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(ellipse 8% 17% at 86% 19%,#cbd7e016,transparent 85%),radial-gradient(ellipse 15% 21% at 96% 45%,#e0d1bc13,transparent 85%),radial-gradient(ellipse 11% 24% at 74% 60%,#abbccb0d,transparent 90%)}
 .street::after,.opening::after{content:"";position:absolute;inset:-12%;background:url(cover.webp) right center / auto 420% no-repeat;filter:grayscale(1) brightness(1.4) blur(1.2px);transform:translate3d(var(--x),calc(var(--y) + var(--scroll)),0)}
 .opening{position:absolute;inset:0 0 auto;height:100svh;overflow:hidden;pointer-events:none;background:var(--ink);z-index:2;animation:fade 5.4s .15s both;mask-image:linear-gradient(90deg,#000 77%,transparent)}
 .opening::after{background-size:auto 360%;background-position:100% 55%;opacity:.8}
-.statement{min-height:64svh;align-content:center;padding-block:10vh 15vh}
-.tagline{grid-column:4/-1;font-size:clamp(30px,5.6vw,106px);font-weight:480;letter-spacing:-.065em;line-height:1.08}
-.tagline strong{display:block;color:var(--oxblood);font-weight:inherit}
+.statement{align-content:center;margin-top:clamp(17px,4svh,45px)}
+.tagline{grid-column:4/-1;font-size:clamp(22px,min(4.5vw,6svh),72px);font-weight:480;letter-spacing:-.065em;line-height:1.08}
+.second-line{display:block}.tagline strong{color:var(--oxblood);font-weight:inherit;white-space:nowrap;display:inline-block}.tagline strong .token{vertical-align:baseline}
 .token{display:inline-block;overflow:hidden;vertical-align:bottom;padding-bottom:.09em}
 .word{display:inline-block;transition:filter 1.45s ease,color 1.45s ease,text-shadow 1.45s ease}
 @media(hover:hover){.word:hover{color:#fff;filter:brightness(1.16);text-shadow:0 0 .5em #e1edff45}.tagline strong .word:hover{color:#cf3852;text-shadow:0 0 .45em #d36b8045}.occupy .word:hover{filter:grayscale(1) brightness(1.24) contrast(1.15)}}
 .run .word{animation:roll 1.22s cubic-bezier(.22,.71,.18,1) var(--at,0s) both}
-.js .statement .word{visibility:hidden}
-.js .statement .word.shown{visibility:visible;animation:roll 1.22s cubic-bezier(.22,.71,.18,1) both}
-.js .statement strong .token:last-child .word{animation-duration:3s}
-.js main{overflow:clip}
-.js .statement{display:block;min-height:170svh;padding:0}
 .statement-inner{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));grid-column:1/-1}
-.js .statement-inner{position:sticky;top:0;min-height:72svh;align-content:center;padding-inline:var(--gutter)}
-a{grid-column:4/-1;justify-self:start;margin-top:clamp(25px,5vw,75px);color:inherit;position:relative;text-decoration:none;font:400 14px ui-monospace,monospace}
-a::after{content:"";position:absolute;inset:auto 0 -.35em;height:1px;background:currentColor;transform:scaleX(0);transform-origin:left;transition:transform 1.9s cubic-bezier(.2,.65,.3,1)}
-a:hover::after,a:focus-visible::after{transform:scaleX(1)}
+.run .tagline .word{animation-duration:.82s}
+.run .tagline strong .word{animation-duration:1.45s}
+a{grid-column:4/-1;justify-self:start;margin-top:clamp(13px,2.7svh,32px);color:inherit;position:relative;text-decoration:none;font:400 14px ui-monospace,monospace}
+a::after{content:"";position:absolute;inset:auto 0 -.35em;height:1px;background:currentColor;transform-origin:left}
+.js a{animation:roll .8s 13.3s both}.js a::after{animation:underline 2.1s 13.6s cubic-bezier(.2,.65,.3,1) both}@keyframes underline{from{transform:scaleX(0)}to{transform:scaleX(1)}}
 a:focus-visible{outline:1px solid currentColor;outline-offset:.55em}
 @keyframes roll{from{transform:translate3d(0,-105%,0);opacity:.1}to{transform:translate3d(0,0,0);opacity:1}}
 @keyframes fade{0%,11%{opacity:1}100%{opacity:0;visibility:hidden}}
-@media(max-width:650px){.hero{padding-bottom:14vh;min-height:93svh}.occupy{grid-column:1/-1}.blueprint,.credit,.tagline,a{grid-column:2/-1}.blueprint{font-size:11.4vw}.street{width:46%}.statement{min-height:55svh}}
-@media(prefers-reduced-motion:reduce){.opening{display:none}.run .word{animation:none}.street::after{transform:none}.js .statement .word{visibility:visible}.js .statement .word.shown{animation:none}a::after{transition:none}}
+@media(max-width:650px){.occupy{grid-column:1/-1}.blueprint,.credit,.tagline,a{grid-column:2/-1}.blueprint{font-size:11.4vw}.street{width:46%}}
+@media(prefers-reduced-motion:reduce){.opening{display:none}.run .word{animation:none}.street::after{transform:none}.js a,.js a::after{animation:none}}
 </style>
 </head>
 <body>
@@ -55,8 +51,8 @@ a:focus-visible{outline:1px solid currentColor;outline-offset:.55em}
 <h1 aria-label="The Occupy Blueprint"><span class="frame occupy" aria-hidden="true"><span class="word" style="--at:3.6s"></span></span><span class="frame blueprint"><span class="word" style="--at:5.1s">BLUEPRINT</span></span></h1>
 <p class="credit" data-delay="6.25">By Tali Gillette</p>
 </section>
-<section class="statement" aria-label="Tagline"><div class="statement-inner">
-<p class="tagline"><span data-delay=".15">They didn’t just occupy Wall Street.</span><strong data-delay="4.1">They occupied U.S.</strong></p>
+<section class="statement run" aria-label="Tagline"><div class="statement-inner">
+<p class="tagline"><span data-delay="8.1" data-step=".31">They didn’t just occupy Wall Street.</span><span class="second-line"><span data-delay="10.2" data-step=".33">They occupied</span> <strong data-delay="11" data-step=".57" data-letters>U.S.</strong></span></p>
 <a href="https://taligillette.substack.com/">Substack</a></div>
 </section>
 </main>
@@ -65,40 +61,24 @@ const preference = matchMedia('(prefers-reduced-motion: reduce)');
 if (!preference.matches && 'IntersectionObserver' in window) {
   document.querySelectorAll('[data-delay]').forEach(line => {
     const start = Number(line.dataset.delay);
-    const words = line.textContent.trim().split(/\s+/);
+    const letters = line.hasAttribute('data-letters');
+    const label = line.textContent.trim();
+    const words = letters ? [...label] : label.split(/\s+/);
+    const step = Number(line.dataset.step ?? .64);
+    if (letters) line.setAttribute('aria-label', label);
     line.replaceChildren(...words.flatMap((word, index) => {
       const mask = document.createElement('span');
       const text = document.createElement('span');
       mask.className = 'token';
       text.className = 'word';
-      text.style.setProperty('--at', (start + index * .64) + 's');
+      text.style.setProperty('--at', (start + index * step) + 's');
       text.textContent = word;
       mask.append(text);
-      return index ? [' ', mask] : [mask];
+      if (letters) mask.setAttribute('aria-hidden', 'true');
+      return index && !letters ? [' ', mask] : [mask];
     }));
   });
   document.documentElement.classList.add('js');
-  const statement = document.querySelector('.statement');
-  const taglineWords = [...statement.querySelectorAll('.word')];
-  let revealed = 0;
-  let nextReveal = 0;
-  let revealTimer = 0;
-  function revealWords() {
-    revealTimer = 0;
-    if (preference.matches || revealed === taglineWords.length) return;
-    const progress = (innerHeight * .77 - statement.getBoundingClientRect().top) / (innerHeight * 1.18);
-    const available = Math.min(taglineWords.length, Math.max(0, 1 + Math.floor(progress * taglineWords.length)));
-    if (revealed >= available) return;
-    const wait = nextReveal - performance.now();
-    if (wait > 0) {
-      revealTimer = setTimeout(revealWords, wait);
-      return;
-    }
-    taglineWords[revealed++].classList.add('shown');
-    nextReveal = performance.now() + 610;
-    if (revealed < available) revealTimer = setTimeout(revealWords, 610);
-  }
-
   const hero = document.querySelector('.hero');
   let x = 0;
   let y = 0;
@@ -106,7 +86,6 @@ if (!preference.matches && 'IntersectionObserver' in window) {
   function draw() {
     frame = 0;
     if (preference.matches) return;
-    if (!revealTimer) revealWords();
     hero.style.setProperty('--x', x + 'px');
     hero.style.setProperty('--y', y + 'px');
     hero.style.setProperty('--scroll', Math.min(window.scrollY, window.innerHeight) * .12 + 'px');
