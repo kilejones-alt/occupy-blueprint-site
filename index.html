@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>The Occupy Blueprint — Tali Gillette</title>
 <style>
-:root{color-scheme:dark;--ink:#040405;--paper:#f3f5f8;--oxblood:#b75c70;--gutter:clamp(20px,5vw,90px);--x:0px;--y:0px;--scroll:0px}
+:root{color-scheme:dark;--ink:#040405;--paper:#f3f5f8;--oxblood:#a51d33;--gutter:clamp(20px,5vw,90px);--x:0px;--y:0px;--scroll:0px}
 *{box-sizing:border-box}
 body{margin:0;background:var(--ink);color:var(--paper);font-family:system-ui,sans-serif}
 main{overflow:hidden}
@@ -28,15 +28,23 @@ h1{grid-column:1/-1;display:grid;grid-template-columns:subgrid;line-height:1}
 .tagline strong{display:block;color:var(--oxblood);font-weight:inherit}
 .token{display:inline-block;overflow:hidden;vertical-align:bottom;padding-bottom:.09em}
 .word{display:inline-block;transition:filter 1.45s ease,color 1.45s ease,text-shadow 1.45s ease}
-@media(hover:hover){.word:hover{color:#fff;filter:brightness(1.16);text-shadow:0 0 .5em #e1edff45}.tagline strong .word:hover{color:#e98b9e;text-shadow:0 0 .45em #d36b8045}.occupy .word:hover{filter:grayscale(1) brightness(1.24) contrast(1.15)}}
+@media(hover:hover){.word:hover{color:#fff;filter:brightness(1.16);text-shadow:0 0 .5em #e1edff45}.tagline strong .word:hover{color:#cf3852;text-shadow:0 0 .45em #d36b8045}.occupy .word:hover{filter:grayscale(1) brightness(1.24) contrast(1.15)}}
 .run .word{animation:roll 1.22s cubic-bezier(.22,.71,.18,1) var(--at,0s) both}
-.js .statement:not(.run) .word{visibility:hidden}
-a{grid-column:4/-1;justify-self:start;margin-top:clamp(25px,5vw,75px);color:inherit;text-underline-offset:.3em;font:400 14px ui-monospace,monospace}
-a:hover,a:focus-visible{color:var(--oxblood)}
+.js .statement .word{visibility:hidden}
+.js .statement .word.shown{visibility:visible;animation:roll 1.22s cubic-bezier(.22,.71,.18,1) both}
+.js .statement strong .token:last-child .word{animation-duration:3s}
+.js main{overflow:clip}
+.js .statement{display:block;min-height:170svh;padding:0}
+.statement-inner{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));grid-column:1/-1}
+.js .statement-inner{position:sticky;top:0;min-height:72svh;align-content:center;padding-inline:var(--gutter)}
+a{grid-column:4/-1;justify-self:start;margin-top:clamp(25px,5vw,75px);color:inherit;position:relative;text-decoration:none;font:400 14px ui-monospace,monospace}
+a::after{content:"";position:absolute;inset:auto 0 -.35em;height:1px;background:currentColor;transform:scaleX(0);transform-origin:left;transition:transform 1.9s cubic-bezier(.2,.65,.3,1)}
+a:hover::after,a:focus-visible::after{transform:scaleX(1)}
+a:focus-visible{outline:1px solid currentColor;outline-offset:.55em}
 @keyframes roll{from{transform:translate3d(0,-105%,0);opacity:.1}to{transform:translate3d(0,0,0);opacity:1}}
 @keyframes fade{0%,11%{opacity:1}100%{opacity:0;visibility:hidden}}
 @media(max-width:650px){.hero{padding-bottom:14vh;min-height:93svh}.occupy{grid-column:1/-1}.blueprint,.credit,.tagline,a{grid-column:2/-1}.blueprint{font-size:11.4vw}.street{width:46%}.statement{min-height:55svh}}
-@media(prefers-reduced-motion:reduce){.opening{display:none}.run .word{animation:none}.street::after{transform:none}.js .statement:not(.run) .word{visibility:visible}}
+@media(prefers-reduced-motion:reduce){.opening{display:none}.run .word{animation:none}.street::after{transform:none}.js .statement .word{visibility:visible}.js .statement .word.shown{animation:none}a::after{transition:none}}
 </style>
 </head>
 <body>
@@ -47,9 +55,9 @@ a:hover,a:focus-visible{color:var(--oxblood)}
 <h1 aria-label="The Occupy Blueprint"><span class="frame occupy" aria-hidden="true"><span class="word" style="--at:3.6s"></span></span><span class="frame blueprint"><span class="word" style="--at:5.1s">BLUEPRINT</span></span></h1>
 <p class="credit" data-delay="6.25">By Tali Gillette</p>
 </section>
-<section class="statement" aria-label="Tagline">
-<p class="tagline"><span data-delay=".15">They didn’t just occupy Wall Street.</span><strong data-delay="4.1">They occupied US.</strong></p>
-<a href="https://taligillette.substack.com/">Substack</a>
+<section class="statement" aria-label="Tagline"><div class="statement-inner">
+<p class="tagline"><span data-delay=".15">They didn’t just occupy Wall Street.</span><strong data-delay="4.1">They occupied U.S.</strong></p>
+<a href="https://taligillette.substack.com/">Substack</a></div>
 </section>
 </main>
 <script>
@@ -71,12 +79,25 @@ if (!preference.matches && 'IntersectionObserver' in window) {
   });
   document.documentElement.classList.add('js');
   const statement = document.querySelector('.statement');
-  const observer = new IntersectionObserver(entries => {
-    if (!entries[0].isIntersecting) return;
-    statement.classList.add('run');
-    observer.disconnect();
-  }, { threshold: .2 });
-  observer.observe(statement);
+  const taglineWords = [...statement.querySelectorAll('.word')];
+  let revealed = 0;
+  let nextReveal = 0;
+  let revealTimer = 0;
+  function revealWords() {
+    revealTimer = 0;
+    if (preference.matches || revealed === taglineWords.length) return;
+    const progress = (innerHeight * .77 - statement.getBoundingClientRect().top) / (innerHeight * 1.18);
+    const available = Math.min(taglineWords.length, Math.max(0, 1 + Math.floor(progress * taglineWords.length)));
+    if (revealed >= available) return;
+    const wait = nextReveal - performance.now();
+    if (wait > 0) {
+      revealTimer = setTimeout(revealWords, wait);
+      return;
+    }
+    taglineWords[revealed++].classList.add('shown');
+    nextReveal = performance.now() + 610;
+    if (revealed < available) revealTimer = setTimeout(revealWords, 610);
+  }
 
   const hero = document.querySelector('.hero');
   let x = 0;
@@ -85,6 +106,7 @@ if (!preference.matches && 'IntersectionObserver' in window) {
   function draw() {
     frame = 0;
     if (preference.matches) return;
+    if (!revealTimer) revealWords();
     hero.style.setProperty('--x', x + 'px');
     hero.style.setProperty('--y', y + 'px');
     hero.style.setProperty('--scroll', Math.min(window.scrollY, window.innerHeight) * .12 + 'px');
