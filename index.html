@@ -161,7 +161,7 @@ h1 { font-weight: 400; line-height: 1; }
   pointer-events: none;
   background: var(--ink);
   z-index: -1;
-  animation: fade 1.6s 3.4s both;
+  animation: fade 5s linear both;
   mask-image: linear-gradient(#000 75%, transparent);
 }
 .opening::before {
@@ -178,6 +178,8 @@ h1 { font-weight: 400; line-height: 1; }
   background-position: 50% 62%;
   filter: grayscale(1) brightness(.65);
   opacity: .62;
+  transform-origin: 57% 62%;
+  transform: translate3d(0, calc(var(--scroll) * .45), 0) scale(1.22);
 }
 .statement {
   position: relative;
@@ -350,8 +352,8 @@ function requestLights() {
   document.querySelector('.night-field').classList.add('is-lit');
   if (beginLights) beginLights();
 }
-// Start the night lights four seconds after arrival, independently of scrolling.
-if (!preference.matches) setTimeout(requestLights, 4000);
+// Start the night lights three seconds after arrival, independently of scrolling.
+if (!preference.matches) setTimeout(requestLights, 3000);
 const canvas = document.querySelector('.night');
 const photograph = new Image();
 photograph.onload = () => {
@@ -422,7 +424,7 @@ photograph.onload = () => {
     const start = performance.now();
     let lastPaint = 0;
     function animate(now) {
-      const progress = Math.min(1, (now - start) / 20000);
+      const progress = Math.min(1, (now - start) / 15000);
       if (now - lastPaint >= 32 || progress === 1) {
         draw(progress);
         lastPaint = now;
@@ -536,17 +538,6 @@ if (!preference.matches && 'IntersectionObserver' in window) {
       frame = requestAnimationFrame(draw);
     }
   }
-  scene.addEventListener('pointermove', event => {
-    if (event.pointerType !== 'mouse' && event.pointerType !== 'pen') return;
-    targetX = (.5 - event.clientX / innerWidth) * Math.min(innerWidth * .09, 130);
-    targetY = (.5 - event.clientY / innerHeight) * 80;
-    schedule();
-  });
-  scene.addEventListener('pointerleave', () => {
-    targetX = 0;
-    targetY = 0;
-    schedule();
-  });
   window.addEventListener('scroll', schedule, { passive: true });
   window.addEventListener('resize', schedule);
   preference.addEventListener('change', () => {
