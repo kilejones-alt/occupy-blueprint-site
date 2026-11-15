@@ -111,6 +111,32 @@ h1 { font-weight: 400; line-height: 1; }
   line-height: .93;
   color: #f3f5f8;
 }
+/* A brief cyanotype impression clipped to the live title's letterforms. */
+.blueprint .word { position: relative; }
+.blueprint .word::after {
+  content: attr(data-blueprint);
+  position: absolute;
+  inset: 0;
+  color: transparent;
+  pointer-events: none;
+  opacity: 0;
+  background:
+    repeating-linear-gradient(90deg, rgb(195 236 255 / 34%) 0 1px, transparent 1px 13px),
+    repeating-linear-gradient(0deg, rgb(195 236 255 / 34%) 0 1px, transparent 1px 13px),
+    repeating-linear-gradient(90deg, rgb(217 242 255 / 56%) 0 1px, transparent 1px 65px),
+    repeating-linear-gradient(0deg, rgb(217 242 255 / 56%) 0 1px, transparent 1px 65px),
+    radial-gradient(circle at 28% 44%, transparent 0 20%, rgb(217 242 255 / 72%) 20% 20.5%, transparent 20.5%),
+    linear-gradient(120deg, #17649a, #124e89 58%, #2872a9);
+  background-clip: text;
+  -webkit-background-clip: text;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .blueprint .word::after { animation: blueprint-impression .16s 18.5s linear; }
+}
+@keyframes blueprint-impression {
+  0%, 70% { opacity: 1; }
+  100% { opacity: 0; }
+}
 .credit {
   margin-top: clamp(19px, 2.4vw, 36px);
   font: 400 clamp(11px, 1.2vw, 17px)/1.5 ui-monospace, monospace;
@@ -352,7 +378,7 @@ a:focus-visible { outline: 1px solid currentColor; outline-offset: .55em; }
 <!-- Opening photograph: Chris Li, 2016, CC0. https://commons.wikimedia.org/wiki/File:Monochrome_wall_street_sign_(Unsplash).jpg -->
 <div class="opening" aria-hidden="true"></div>
 <figure class="street" aria-hidden="true"></figure>
-<div class="title"><h1 aria-label="The Occupy Blueprint"><span class="frame the"><span class="word" >THE</span></span><span class="frame occupy" aria-hidden="true"><span class="word" ><span class="lettering">OCCUPY</span></span></span><span class="frame blueprint"><span class="word" >BLUEPRINT</span></span></h1></div>
+<div class="title"><h1 aria-label="The Occupy Blueprint"><span class="frame the"><span class="word" >THE</span></span><span class="frame occupy" aria-hidden="true"><span class="word" ><span class="lettering">OCCUPY</span></span></span><span class="frame blueprint" aria-hidden="true"><span class="word" data-blueprint="BLUEPRINT">BLUEPRINT</span></span></h1></div>
 <p class="credit">By Tali Gillette</p>
 </section>
 <section class="statement run" aria-label="Tagline"><div class="statement-inner">
