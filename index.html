@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>The Occupy Blueprint — Tali Gillette</title>
 <style>
-:root{color-scheme:dark;--ink:#040405;--paper:#e8edf2;--oxblood:#b75c70;--gutter:clamp(20px,5vw,90px);--x:0px;--y:0px;--scroll:0px}
+:root{color-scheme:dark;--ink:#040405;--paper:#f3f5f8;--oxblood:#b75c70;--gutter:clamp(20px,5vw,90px);--x:0px;--y:0px;--scroll:0px}
 *{box-sizing:border-box}
 body{margin:0;background:var(--ink);color:var(--paper);font-family:system-ui,sans-serif}
 main{overflow:hidden}
@@ -15,18 +15,20 @@ h1,p,figure{margin:0}
 h1{grid-column:1/-1;display:grid;grid-template-columns:subgrid;line-height:1}
 .frame{display:block;overflow:hidden}
 .occupy{grid-column:1/11}
-.occupy .word{display:block;aspect-ratio:1288/408;background:url(cover.webp) 50.5% 27.25% / 129.81% auto no-repeat;filter:grayscale(1) brightness(.92) contrast(1.25);mix-blend-mode:screen}
+.occupy .word{display:block;aspect-ratio:1288/408;background:url(cover.webp) 50.5% 27.25% / 129.81% auto no-repeat;filter:grayscale(1) brightness(1.08) contrast(1.19);mix-blend-mode:screen}
 .blueprint{grid-column:4/-1;margin-top:clamp(8px,1.3vw,24px);font-size:clamp(27px,9.2vw,174px);font-weight:650;letter-spacing:-.085em}
-.credit{grid-column:4/-1;margin-top:clamp(15px,2.4vw,36px);font:400 clamp(11px,1.2vw,17px)/1.5 ui-monospace,monospace;letter-spacing:.085em;text-transform:uppercase;color:#b7bfca}
-.street{position:absolute;z-index:-1;inset:8% 0 auto auto;width:32%;height:75%;overflow:hidden;opacity:.33;mask-image:linear-gradient(90deg,transparent,#000 72%)}
-.street::after,.opening::after{content:"";position:absolute;inset:-12%;background:url(cover.webp) right center / auto 420% no-repeat;filter:grayscale(1) brightness(1.58);transform:translate3d(var(--x),calc(var(--y) + var(--scroll)),0)}
+.credit{grid-column:4/-1;margin-top:clamp(15px,2.4vw,36px);font:400 clamp(11px,1.2vw,17px)/1.5 ui-monospace,monospace;letter-spacing:.085em;text-transform:uppercase;color:#d1d8e0}
+.street{position:absolute;z-index:-1;inset:8% 0 auto auto;width:32%;height:75%;overflow:hidden;opacity:.24;mask-image:linear-gradient(90deg,transparent,#000 72%)}
+.hero::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(ellipse 8% 17% at 86% 19%,#cbd7e016,transparent 85%),radial-gradient(ellipse 15% 21% at 96% 45%,#e0d1bc13,transparent 85%),radial-gradient(ellipse 11% 24% at 74% 60%,#abbccb0d,transparent 90%)}
+.street::after,.opening::after{content:"";position:absolute;inset:-12%;background:url(cover.webp) right center / auto 420% no-repeat;filter:grayscale(1) brightness(1.4) blur(1.2px);transform:translate3d(var(--x),calc(var(--y) + var(--scroll)),0)}
 .opening{position:absolute;inset:0 0 auto;height:100svh;overflow:hidden;pointer-events:none;background:var(--ink);z-index:2;animation:fade 5.4s .15s both;mask-image:linear-gradient(90deg,#000 77%,transparent)}
 .opening::after{background-size:auto 360%;background-position:100% 55%;opacity:.8}
 .statement{min-height:64svh;align-content:center;padding-block:10vh 15vh}
 .tagline{grid-column:4/-1;font-size:clamp(30px,5.6vw,106px);font-weight:480;letter-spacing:-.065em;line-height:1.08}
 .tagline strong{display:block;color:var(--oxblood);font-weight:inherit}
 .token{display:inline-block;overflow:hidden;vertical-align:bottom;padding-bottom:.09em}
-.word{display:inline-block}
+.word{display:inline-block;transition:filter 1.45s ease,color 1.45s ease,text-shadow 1.45s ease}
+@media(hover:hover){.word:hover{color:#fff;filter:brightness(1.16);text-shadow:0 0 .5em #e1edff45}.tagline strong .word:hover{color:#e98b9e;text-shadow:0 0 .45em #d36b8045}.occupy .word:hover{filter:grayscale(1) brightness(1.24) contrast(1.15)}}
 .run .word{animation:roll 1.22s cubic-bezier(.22,.71,.18,1) var(--at,0s) both}
 .js .statement:not(.run) .word{visibility:hidden}
 a{grid-column:4/-1;justify-self:start;margin-top:clamp(25px,5vw,75px);color:inherit;text-underline-offset:.3em;font:400 14px ui-monospace,monospace}
