@@ -16,31 +16,32 @@ h1{grid-column:1/-1;display:grid;grid-template-columns:subgrid;line-height:1}
 .frame{display:block;overflow:hidden}
 .occupy{grid-column:1/11;width:min(100%,69svh)}
 .occupy .word{display:block;aspect-ratio:1288/408;background:url(cover.webp) 50.5% 27.25% / 129.81% auto no-repeat;filter:grayscale(1) brightness(1.18) contrast(1.23);mix-blend-mode:screen}
-.blueprint{grid-column:4/-1;margin-top:clamp(8px,1.3vw,24px);color:#fff;font-size:clamp(27px,min(8vw,11svh),145px);font-weight:650;letter-spacing:-.065em}
-.credit{grid-column:4/-1;margin-top:clamp(15px,2.4vw,36px);font:400 clamp(11px,1.2vw,17px)/1.5 ui-monospace,monospace;letter-spacing:.085em;text-transform:uppercase;color:#d1d8e0}
-.night{position:absolute;inset:0;width:100%;height:100%;z-index:-2;pointer-events:none;opacity:.44;filter:blur(2.2px);mask-image:linear-gradient(#0000 10%,#000 67%)}
+.blueprint{grid-column:1/-1;margin-top:clamp(8px,1.3vw,24px);color:#fff;font-size:clamp(27px,min(8vw,11svh),145px);font-weight:650;letter-spacing:-.065em}
+.credit{grid-column:1/-1;margin-top:clamp(15px,2.4vw,36px);font:400 clamp(11px,1.2vw,17px)/1.5 ui-monospace,monospace;letter-spacing:.085em;text-transform:uppercase;color:#d1d8e0}
+.night{position:absolute;inset:0;width:100%;height:100%;z-index:-2;pointer-events:none;opacity:.84;filter:blur(1.2px);mask-image:linear-gradient(#0000 2%,#000 47%)}
 .street{position:absolute;z-index:-1;inset:8% 0 auto auto;width:32%;height:75%;overflow:hidden;opacity:.24;mask-image:linear-gradient(90deg,transparent,#000 72%)}
 .hero::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(ellipse 8% 17% at 86% 19%,#cbd7e016,transparent 85%),radial-gradient(ellipse 15% 21% at 96% 45%,#e0d1bc13,transparent 85%),radial-gradient(ellipse 11% 24% at 74% 60%,#abbccb0d,transparent 90%)}
 .street::after,.opening::after{content:"";position:absolute;inset:-12%;background:url(cover.webp) right center / auto 420% no-repeat;filter:grayscale(1) brightness(1.4) blur(1.2px);transform:translate3d(var(--x),calc(var(--y) + var(--scroll)),0)}
 .opening{position:absolute;inset:0 0 auto;height:100svh;overflow:hidden;pointer-events:none;background:var(--ink);z-index:2;animation:fade 5.4s .15s both;mask-image:linear-gradient(90deg,#000 77%,transparent)}
 .opening::after{background-size:auto 360%;background-position:100% 55%;opacity:.8}
 .statement{align-content:center;margin-top:clamp(24px,5.2svh,58px)}
-.tagline{grid-column:4/-1;font-size:clamp(22px,min(4.5vw,6svh),72px);font-weight:480;letter-spacing:-.045em;word-spacing:.09em;line-height:1.16}
+.tagline{grid-column:1/-1;font-size:clamp(22px,min(4.5vw,6svh),72px);font-weight:480;letter-spacing:-.045em;word-spacing:.09em;line-height:1.16}
 .second-line{display:block;margin-top:.12em}.tagline strong{color:var(--oxblood);font-weight:inherit;white-space:nowrap;display:inline-block}.tagline strong .token{vertical-align:baseline}
 .token{display:inline-block;overflow:hidden;vertical-align:bottom;padding-bottom:.09em}
 .word{display:inline-block;transition:filter 1.45s ease,color 1.45s ease,text-shadow 1.45s ease}
 @media(hover:hover){.word:hover{color:#fff;filter:brightness(1.16);text-shadow:0 0 .5em #e1edff45}.tagline strong .word:hover{color:#cf3852;text-shadow:0 0 .45em #d36b8045}.occupy .word:hover{filter:grayscale(1) brightness(1.24) contrast(1.15)}}
 .run .word{animation:roll 1.22s cubic-bezier(.22,.71,.18,1) var(--at,0s) both}
 .statement-inner{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));grid-column:1/-1}
-.run .tagline .word{animation-duration:.82s}
+.run .tagline .word{animation:wave 1.65s cubic-bezier(.24,.7,.19,1) var(--at) both}
+@keyframes wave{from{clip-path:inset(0 100% 0 0);opacity:.2}to{clip-path:inset(0);opacity:1}}
 .run .tagline strong .word{animation-duration:1.45s}
-a{grid-column:4/-1;justify-self:start;margin-top:clamp(13px,2.7svh,32px);color:inherit;position:relative;text-decoration:none;font:400 14px ui-monospace,monospace}
+a{grid-column:1/-1;justify-self:start;margin-top:clamp(13px,2.7svh,32px);color:inherit;position:relative;text-decoration:none;font:400 14px ui-monospace,monospace}
 a::after{content:"";position:absolute;inset:auto 0 -.35em;height:1px;background:currentColor;transform-origin:left}
 .js a{animation:roll .8s 13.3s both}.js a::after{animation:underline 2.1s 13.6s cubic-bezier(.2,.65,.3,1) both}@keyframes underline{from{transform:scaleX(0)}to{transform:scaleX(1)}}
 a:focus-visible{outline:1px solid currentColor;outline-offset:.55em}
 @keyframes roll{from{transform:translate3d(0,-105%,0);opacity:.1}to{transform:translate3d(0,0,0);opacity:1}}
 @keyframes fade{0%,11%{opacity:1}100%{opacity:0;visibility:hidden}}
-@media(max-width:650px){.occupy{grid-column:1/-1}.blueprint,.credit,.tagline,a{grid-column:2/-1}.blueprint{font-size:11.4vw}.street{width:46%}}
+@media(max-width:650px){.occupy{grid-column:1/-1}.blueprint{font-size:11.4vw}.street{width:46%}}
 @media(prefers-reduced-motion:reduce){.opening{display:none}.run .word{animation:none}.street::after{transform:none}.js a,.js a::after{animation:none}}
 </style>
 </head>
@@ -54,7 +55,7 @@ a:focus-visible{outline:1px solid currentColor;outline-offset:.55em}
 <p class="credit" data-delay="6.25">By Tali Gillette</p>
 </section>
 <section class="statement run" aria-label="Tagline"><div class="statement-inner">
-<p class="tagline"><span data-delay="8.1" data-step=".31">They didn’t just occupy Wall Street.</span><span class="second-line"><span data-delay="10.2" data-step=".33">They occupied</span> <strong data-delay="11" data-step=".57" data-letters>U.S.</strong></span></p>
+<p class="tagline"><span data-delay="8.1" data-step=".31">They didn’t just occupy Wall Street.</span><span class="second-line"><span data-delay="9.35" data-step=".33">They occupied</span> <strong data-delay="10.35" data-step=".57" data-letters>U.S.</strong></span></p>
 <a href="https://taligillette.substack.com/">Substack</a></div>
 </section>
 </main>
@@ -69,13 +70,16 @@ photograph.onload = () => {
   context.drawImage(photograph, 0, 0, w, h);
   const pixels = context.getImageData(0, 0, w, h).data;
   context.clearRect(0, 0, w, h);
+  context.globalAlpha = .22;
+  context.drawImage(photograph, 0, 0, w, h);
+  context.globalAlpha = 1;
   const lights = [];
   for (let y = 2; y < h; y += 3) {
     for (let x = 2; x < w; x += 3) {
       const i = (y * w + x) * 4;
       const [r, g, b] = [pixels[i], pixels[i + 1], pixels[i + 2]];
       const intensity = .3 * r + .59 * g + .11 * b;
-      if (intensity < 95) continue;
+      if (intensity < 70) continue;
       const distance = Math.hypot((x - w * .65) * .85, y - h * .69);
       const offset = ((x * 47 + y * 31) % 61) - 30;
       lights.push({x, y, r, g, b, intensity, order: distance + offset});
@@ -86,8 +90,8 @@ photograph.onload = () => {
   function draw(count) {
     while (shown < count) {
       const {x, y, r, g, b, intensity} = lights[shown++];
-      context.fillStyle = `rgba(${r},${g},${b},${intensity / 390})`;
-      context.fillRect(x, y, 2.5, 2.5);
+      context.fillStyle = `rgba(${r},${g},${b},${intensity / 245})`;
+      context.fillRect(x, y, 3, 3);
     }
   }
   if (preference.matches) {
@@ -110,7 +114,7 @@ if (!preference.matches && 'IntersectionObserver' in window) {
     const start = Number(line.dataset.delay);
     const letters = line.hasAttribute('data-letters');
     const label = line.textContent.trim();
-    const words = letters ? [...label] : label.split(/\s+/);
+    const words = letters ? [...label] : [label];
     const step = Number(line.dataset.step ?? .64);
     if (letters) line.setAttribute('aria-label', label);
     line.replaceChildren(...words.flatMap((word, index) => {
