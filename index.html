@@ -46,7 +46,7 @@ main {
 }
 h1, p, figure, blockquote { margin: 0; }
 .title {
-  width: min(100%, 1100px);
+  width: min(100%, 1100px, 136svh);
   container-type: inline-size;
 }
 h1 { font-weight: 400; line-height: 1; }
@@ -151,7 +151,19 @@ h1 { font-weight: 400; line-height: 1; }
   background-position: 100% 55%;
   opacity: .8;
 }
-.statement { margin-top: clamp(32px, 5.2svh, 62px); }
+.statement {
+  position: relative;
+  isolation: isolate;
+  margin-top: clamp(32px, 5.2svh, 62px);
+}
+.statement::before {
+  content: '';
+  position: absolute;
+  inset: -45% -12% -55% -18%;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(ellipse at 31% 45%, rgb(4 4 5 / 58%) 14%, rgb(4 4 5 / 27%) 40%, transparent 71%);
+}
 .tagline {
   font-size: clamp(25px, 4.3vw, 68px);
   font-weight: 450;
@@ -355,7 +367,8 @@ photograph.onload = () => {
       const fade = Math.min(1, Math.max(0, (progress - onset) / .06));
       if (fade <= 0) break;
       const {x, y, r, g, b, intensity} = lights[index];
-      const opacity = fade * fade * (3 - 2 * fade) * Math.min(.9, intensity / 200);
+      const brightness = Math.min(.72, intensity / 225);
+      const opacity = fade * fade * (3 - 2 * fade) * brightness;
       context.fillStyle = `rgba(${r},${g},${b},${opacity})`;
       context.beginPath();
       context.arc(x, y, .9, 0, Math.PI * 2);
