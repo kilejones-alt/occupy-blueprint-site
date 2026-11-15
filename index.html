@@ -280,7 +280,7 @@ a::after {
 }
 .js .statement a.revealed .word { animation: wave 1.3s cubic-bezier(.18,.7,.24,1) backwards; }
 .js .statement a::after { transform: scaleX(0); }
-.js .statement a.revealed::after { animation: underline 1.5s .2s cubic-bezier(.2,.65,.3,1) both; }
+.js .statement a.revealed.underline-ready::after { animation: underline 1.5s .5s cubic-bezier(.2,.65,.3,1) both; }
 a:focus-visible { outline: 1px solid currentColor; outline-offset: .55em; }
 .reading {
   padding: clamp(48px, 10vh, 130px) var(--gutter) clamp(90px, 15vh, 180px);
@@ -349,6 +349,7 @@ a:focus-visible { outline: 1px solid currentColor; outline-offset: .55em; }
   .js .statement [data-reveal]:not(.revealed) { opacity: 1; }
   .revealed .word, .tagline .revealed .word, .js .statement a, .js .statement a::after, .js .reading.entered a::after { animation: none; }
   .tagline strong.revealed .word.period { animation: none; }
+  .js .statement a.revealed.underline-ready::after { animation: none; transform: none; }
   .street::after { transform: none; }
   .js .reading { opacity: 1; transform: none; transition: none; }
   .js .reading a::after { transform: none; }
@@ -502,6 +503,13 @@ if (!preference.matches && 'IntersectionObserver' in window) {
       return index && !letters ? [' ', mask] : [mask];
     }));
   });
+  const substackLink = document.querySelector('.statement a');
+  const periods = document.querySelectorAll('.statement [data-letters] .period');
+  const lastPeriod = periods[periods.length - 1];
+  lastPeriod.addEventListener('animationend', event => {
+    if (event.animationName === 'period-appear') substackLink.classList.add('underline-ready');
+  }, { once: true });
+
   document.documentElement.classList.add('js');
   const revealItems = [...document.querySelectorAll('.statement [data-reveal]')];
   const pauses = [850, 750, 1000, 0];
