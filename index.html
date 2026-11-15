@@ -4,6 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>The Occupy Blueprint — Tali Gillette</title>
+<script>
+  if ('IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.documentElement.classList.add('reveal-pending');
+    document.addEventListener('DOMContentLoaded', () => {
+      document.documentElement.classList.remove('reveal-pending');
+    }, { once: true });
+  }
+</script>
 <style>
 
 @font-face {
@@ -238,9 +246,10 @@ h1 { font-weight: 400; line-height: 1; }
   transition: transform .85s cubic-bezier(.2,.7,.2,1), filter 1.2s ease, color 1.2s ease;
 }
 .word { display: inline-block; }
-.js [data-reveal]:not(.revealed) .word { opacity: 0; }
+.reveal-pending .statement [data-reveal]:not(.revealed),
+.js .statement [data-reveal]:not(.revealed) { opacity: 0; }
 .revealed .word { animation: roll 1s cubic-bezier(.18,.7,.24,1) var(--at, 0s) backwards; }
-.tagline .revealed .word { animation: wave .9s cubic-bezier(.18,.7,.24,1) var(--at, 0s) backwards; }
+.tagline .revealed .word { animation: wave 1.05s cubic-bezier(.18,.7,.24,1) var(--at, 0s) backwards; }
 .tagline strong.revealed .word { animation: roll 2.6s cubic-bezier(.2,.65,.25,1) var(--at, 0s) backwards; }
 a {
   display: inline-block;
@@ -259,8 +268,7 @@ a::after {
   background: currentColor;
   transform-origin: left;
 }
-.js .statement a:not(.revealed) { opacity: 0; }
-.js .statement a.revealed .word { animation: wave 1.2s cubic-bezier(.18,.7,.24,1) backwards; }
+.js .statement a.revealed .word { animation: wave 1.3s cubic-bezier(.18,.7,.24,1) backwards; }
 .js .statement a::after { transform: scaleX(0); }
 .js .statement a.revealed::after { animation: underline 1.5s .2s cubic-bezier(.2,.65,.3,1) both; }
 a:focus-visible { outline: 1px solid currentColor; outline-offset: .55em; }
@@ -327,7 +335,8 @@ a:focus-visible { outline: 1px solid currentColor; outline-offset: .55em; }
   .frame, .token, .hover-word, a { transition: none; }
   .frame:hover, .token:not(:has(.hover-word)):hover, .hover-word:hover, a:hover { transform: none; }
   .opening { display: none; }
-  .js [data-reveal]:not(.revealed) .word, .js .statement a:not(.revealed) { opacity: 1; }
+  .reveal-pending .statement [data-reveal]:not(.revealed),
+  .js .statement [data-reveal]:not(.revealed) { opacity: 1; }
   .revealed .word, .tagline .revealed .word, .js .statement a, .js .statement a::after, .js .reading.entered a::after { animation: none; }
   .street::after { transform: none; }
   .js .reading { opacity: 1; transform: none; transition: none; }
@@ -475,7 +484,7 @@ if (!preference.matches && 'IntersectionObserver' in window) {
   });
   document.documentElement.classList.add('js');
   const revealItems = [...document.querySelectorAll('.statement [data-reveal]')];
-  const pauses = [750, 650, 900, 0];
+  const pauses = [850, 750, 1000, 0];
   let nextReveal = 0;
   let waiting = false;
   let scrollStarted = false;
