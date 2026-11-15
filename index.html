@@ -39,7 +39,8 @@ body {
 }
 main {
   overflow: clip;
-  min-height: 114svh;
+  min-height: 122svh;
+  text-align: center;
   position: relative;
   isolation: isolate;
   padding: clamp(36px, 7vh, 84px) var(--gutter) clamp(86px, 15vh, 180px);
@@ -47,6 +48,7 @@ main {
 h1, p, figure, blockquote { margin: 0; }
 .title {
   width: min(100%, 1100px, 124svh);
+  margin-inline: auto;
   container-type: inline-size;
 }
 h1 { font-weight: 400; line-height: 1; }
@@ -142,14 +144,14 @@ h1 { font-weight: 400; line-height: 1; }
   overflow: hidden;
   pointer-events: none;
   background: var(--ink);
-  z-index: 2;
+  z-index: -1;
   animation: fade 3.4s .15s both;
   mask-image: linear-gradient(90deg, #000 77%, transparent);
 }
 .opening::after {
   background-size: auto 360%;
   background-position: 100% 55%;
-  opacity: .8;
+  opacity: .22;
 }
 .statement {
   position: relative;
@@ -162,7 +164,7 @@ h1 { font-weight: 400; line-height: 1; }
   inset: -45% -12% -55% -18%;
   z-index: -1;
   pointer-events: none;
-  background: radial-gradient(ellipse at 31% 45%, rgb(4 4 5 / 58%) 14%, rgb(4 4 5 / 27%) 40%, transparent 71%);
+  background: radial-gradient(ellipse at 50% 45%, rgb(4 4 5 / 58%) 14%, rgb(4 4 5 / 27%) 40%, transparent 71%);
 }
 .tagline {
   font-size: clamp(25px, 4.3vw, 68px);
@@ -174,6 +176,7 @@ h1 { font-weight: 400; line-height: 1; }
 .second-line {
   display: flex;
   align-items: baseline;
+  justify-content: center;
   flex-wrap: wrap;
   gap: 0 .24em;
   margin-top: .12em;
@@ -274,7 +277,7 @@ a:focus-visible { outline: 1px solid currentColor; outline-offset: .55em; }
 @keyframes underline { from { transform: scaleX(0); } to { transform: scaleX(1); } }
 @keyframes fade { 0%, 11% { opacity: 1; } 100% { opacity: 0; visibility: hidden; } }
 @media (max-width: 650px) {
-  main { min-height: 100svh; padding-top: 10svh; padding-bottom: 13svh; }
+  main { min-height: 122svh; padding-top: 10svh; padding-bottom: 13svh; }
   .street { width: 46%; }
   .statement { margin-top: 38px; }
   .reading { min-height: 65svh; }
@@ -298,8 +301,8 @@ a:focus-visible { outline: 1px solid currentColor; outline-offset: .55em; }
 <section class="hero run" aria-label="The Occupy Blueprint">
 <div class="opening" aria-hidden="true"></div>
 <figure class="street" aria-hidden="true"></figure>
-<div class="title"><h1 aria-label="The Occupy Blueprint"><span class="frame the" data-reveal><span class="word" >THE</span></span><span class="frame occupy" data-reveal aria-hidden="true"><span class="word" ><span class="lettering">OCCUPY</span></span></span><span class="frame blueprint" data-reveal><span class="word" >BLUEPRINT</span></span></h1></div>
-<p class="credit" data-delay="0" data-reveal>By Tali Gillette</p>
+<div class="title"><h1 aria-label="The Occupy Blueprint"><span class="frame the"><span class="word" >THE</span></span><span class="frame occupy" aria-hidden="true"><span class="word" ><span class="lettering">OCCUPY</span></span></span><span class="frame blueprint"><span class="word" >BLUEPRINT</span></span></h1></div>
+<p class="credit">By Tali Gillette</p>
 </section>
 <section class="statement run" aria-label="Tagline"><div class="statement-inner">
 <p class="tagline"><span data-delay="0" data-reveal data-step=".31">They didn’t just occupy Wall Street.</span><span class="second-line"><span data-delay="0" data-reveal data-step=".33">They occupied</span> <strong data-delay="0" data-reveal data-step=".6" data-letters>U.S.</strong></span></p>
@@ -438,17 +441,28 @@ if (!preference.matches && 'IntersectionObserver' in window) {
     }));
   });
   document.documentElement.classList.add('js');
-  const revealItems = [...document.querySelectorAll('[data-reveal]')];
-  const pauses = [350, 600, 600, 350, 550, 500, 4500, 0];
+  const revealItems = [...document.querySelectorAll('.statement [data-reveal]')];
+  const pauses = [750, 650, 4500, 0];
   let nextReveal = 0;
-  let waiting = true;
+  let waiting = false;
+  let scrollStarted = false;
   function revealNext() {
     if (waiting || nextReveal >= revealItems.length) return;
+    if (!scrollStarted) {
+      if (window.scrollY < 48) return;
+      scrollStarted = true;
+      requestLights();
+      waiting = true;
+      setTimeout(() => {
+        waiting = false;
+        revealNext();
+      }, 320);
+      return;
+    }
     const element = revealItems[nextReveal];
     const bounds = element.getBoundingClientRect();
     if (bounds.top + Math.min(bounds.height * .45, innerHeight * .25) >= innerHeight * .94) return;
     element.classList.add('revealed');
-    if (element.classList.contains('occupy')) requestLights();
     const pause = pauses[nextReveal++];
     if (nextReveal === revealItems.length) {
       revealObserver.disconnect();
@@ -466,10 +480,7 @@ if (!preference.matches && 'IntersectionObserver' in window) {
   revealItems.forEach(element => revealObserver.observe(element));
   window.addEventListener('scroll', revealNext, { passive: true });
   window.addEventListener('resize', revealNext);
-  setTimeout(() => {
-    waiting = false;
-    revealNext();
-  }, 1600);
+  revealNext();
 
   const scene = document.querySelector('main');
   let targetX = 0;
