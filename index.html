@@ -122,8 +122,8 @@ h1 { font-weight: 400; line-height: 1; }
   height: 100%;
   z-index: -2;
   pointer-events: none;
-  opacity: .84;
-  filter: blur(1.2px);
+  opacity: 1;
+  filter: brightness(1.35) blur(.35px);
   transform-origin: 50% 50%;
   transform: translate3d(var(--x), calc(var(--y) + var(--scroll)), 0) scale(1.375);
   will-change: transform;
@@ -231,7 +231,7 @@ a::after {
   transform-origin: left;
 }
 .js .statement a:not(.revealed) { opacity: 0; }
-.js .statement a.revealed { animation: roll .6s backwards; }
+.js .statement a.revealed .word { animation: wave 1.2s cubic-bezier(.18,.7,.24,1) backwards; }
 .js .statement a::after { transform: scaleX(0); }
 .js .statement a.revealed::after { animation: underline 1.5s .2s cubic-bezier(.2,.65,.3,1) both; }
 a:focus-visible { outline: 1px solid currentColor; outline-offset: .55em; }
@@ -320,7 +320,7 @@ a:focus-visible { outline: 1px solid currentColor; outline-offset: .55em; }
 </section>
 <section class="statement run" aria-label="Tagline"><div class="statement-inner">
 <p class="tagline"><span data-delay="0" data-reveal data-step=".31">They didn’t just occupy Wall Street.</span><span class="second-line"><span data-delay="0" data-reveal data-step=".33">They occupied</span> <strong data-delay="0" data-reveal data-step=".6" data-letters>U.S.</strong></span></p>
-<a data-reveal href="https://taligillette.substack.com/">Substack</a></div>
+<a data-delay="0" data-reveal href="https://taligillette.substack.com/">Substack</a></div>
 </section>
 </main>
 <script>
@@ -398,7 +398,7 @@ photograph.onload = () => {
       const fade = Math.min(1, Math.max(0, (progress - onset) / .06));
       if (fade <= 0) break;
       const {x, y, r, g, b, intensity, edgeFade} = lights[index];
-      const brightness = Math.min(.72, intensity / 225);
+      const brightness = Math.min(.9, intensity / 180);
       const opacity = fade * fade * (3 - 2 * fade) * brightness * edgeFade;
       context.fillStyle = `rgba(${r},${g},${b},${opacity})`;
       context.beginPath();
@@ -460,7 +460,7 @@ if (!preference.matches && 'IntersectionObserver' in window) {
   });
   document.documentElement.classList.add('js');
   const revealItems = [...document.querySelectorAll('.statement [data-reveal]')];
-  const pauses = [750, 650, 4500, 0];
+  const pauses = [750, 650, 900, 0];
   let nextReveal = 0;
   let waiting = false;
   let scrollStarted = false;
