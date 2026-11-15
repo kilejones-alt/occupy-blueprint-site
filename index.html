@@ -106,6 +106,15 @@ h1 { font-weight: 400; line-height: 1; }
   overflow: hidden;
   mask-image: linear-gradient(transparent 2%, #000 24%, #000 62%, transparent 100%);
 }
+.night-drift {
+  position: absolute;
+  inset: 0;
+  transform-origin: 50% 50%;
+  animation: night-turn 100s ease-in-out infinite alternate both;
+  animation-play-state: paused;
+  will-change: transform;
+}
+.night-field.is-lit .night-drift { animation-play-state: running; }
 .night {
   position: absolute;
   inset: 0;
@@ -265,6 +274,10 @@ a:focus-visible { outline: 1px solid currentColor; outline-offset: .55em; }
   .tagline strong .token:hover { color: #c43249; }
   a:hover { transform: translateY(-2px); }
 }
+@keyframes night-turn {
+  from { transform: rotate(-2deg); }
+  to { transform: rotate(2deg); }
+}
 @keyframes roll {
   from { transform: translateY(-105%); clip-path: inset(0 0 100%); opacity: 0; }
   to { transform: none; clip-path: inset(-5px); opacity: 1; }
@@ -283,6 +296,7 @@ a:focus-visible { outline: 1px solid currentColor; outline-offset: .55em; }
   .reading { min-height: 65svh; }
 }
 @media (prefers-reduced-motion: reduce) {
+  .night-drift { animation: none; transform: none; }
   .frame, .token, .hover-word, a { transition: none; }
   .frame:hover, .token:not(:has(.hover-word)):hover, .hover-word:hover, a:hover { transform: none; }
   .opening { display: none; }
@@ -297,7 +311,7 @@ a:focus-visible { outline: 1px solid currentColor; outline-offset: .55em; }
 </head>
 <body>
 <main>
-<div class="night-field" aria-hidden="true"><canvas class="night"></canvas></div>
+<div class="night-field" aria-hidden="true"><div class="night-drift"><canvas class="night"></canvas></div></div>
 <section class="hero run" aria-label="The Occupy Blueprint">
 <div class="opening" aria-hidden="true"></div>
 <figure class="street" aria-hidden="true"></figure>
@@ -315,6 +329,7 @@ let lightsRequested = false;
 let beginLights = null;
 function requestLights() {
   lightsRequested = true;
+  document.querySelector('.night-field').classList.add('is-lit');
   if (beginLights) beginLights();
 }
 const canvas = document.querySelector('.night');
@@ -352,7 +367,10 @@ photograph.onload = () => {
       if (intensity < 70) continue;
       const distance = Math.hypot((x - w * .65) * .85, y - h * .69);
       const offset = ((x * 47 + y * 31) % 61) - 30;
-      lights.push({x, y, r, g, b, intensity, order: distance + offset});
+      // Fade the source photograph's borders before centering and moving it.
+      const edge = Math.max(0, Math.min(1, x / 90, (w - x) / 90, y / 70, (h - y) / 70));
+      const edgeFade = edge * edge * (3 - 2 * edge);
+      lights.push({x, y, r, g, b, intensity, edgeFade, order: distance + offset});
     }
   }
   // Frame the illuminated land, excluding the empty black image margins.
@@ -379,9 +397,9 @@ photograph.onload = () => {
       const onset = index / count * .94;
       const fade = Math.min(1, Math.max(0, (progress - onset) / .06));
       if (fade <= 0) break;
-      const {x, y, r, g, b, intensity} = lights[index];
+      const {x, y, r, g, b, intensity, edgeFade} = lights[index];
       const brightness = Math.min(.72, intensity / 225);
-      const opacity = fade * fade * (3 - 2 * fade) * brightness;
+      const opacity = fade * fade * (3 - 2 * fade) * brightness * edgeFade;
       context.fillStyle = `rgba(${r},${g},${b},${opacity})`;
       context.beginPath();
       context.arc(x, y, .9, 0, Math.PI * 2);
