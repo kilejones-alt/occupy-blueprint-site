@@ -198,9 +198,9 @@ h1 { font-weight: 400; line-height: 1; }
 }
 .word { display: inline-block; }
 .js [data-reveal]:not(.revealed) .word { opacity: 0; }
-.revealed .word { animation: roll 1.7s cubic-bezier(.18,.7,.24,1) var(--at, 0s) both; }
-.tagline .revealed .word { animation: wave 1.6s cubic-bezier(.18,.7,.24,1) var(--at, 0s) both; }
-.tagline strong.revealed .word { animation: roll 2.6s cubic-bezier(.2,.65,.25,1) var(--at, 0s) both; }
+.revealed .word { animation: roll 1.7s cubic-bezier(.18,.7,.24,1) var(--at, 0s) backwards; }
+.tagline .revealed .word { animation: wave 1.6s cubic-bezier(.18,.7,.24,1) var(--at, 0s) backwards; }
+.tagline strong.revealed .word { animation: roll 2.6s cubic-bezier(.2,.65,.25,1) var(--at, 0s) backwards; }
 a {
   display: inline-block;
   margin-top: clamp(22px, 3svh, 36px);
@@ -219,7 +219,7 @@ a::after {
   transform-origin: left;
 }
 .js .statement a:not(.revealed) { opacity: 0; }
-.js .statement a.revealed { animation: roll .8s both; }
+.js .statement a.revealed { animation: roll .8s backwards; }
 .js .statement a::after { transform: scaleX(0); }
 .js .statement a.revealed::after { animation: underline 2.1s .3s cubic-bezier(.2,.65,.3,1) both; }
 a:focus-visible { outline: 1px solid currentColor; outline-offset: .55em; }
